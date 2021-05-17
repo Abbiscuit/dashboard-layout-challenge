@@ -8,7 +8,7 @@ import Layout from '../ui/layout';
 
 const Dashboard = () => {
   return (
-    <Layout>
+    <>
       <div className="flex flex-row h-screen bg-gray-100">
         {/* sidebar */}
         <div className="flex flex-col items-center justify-between flex-none w-20 py-4 bg-gray-200">
@@ -159,7 +159,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 
