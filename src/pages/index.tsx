@@ -1,13 +1,15 @@
-import ByeByeCard from '../app/ByeByeCard';
-import WelcomeCard from '../app/WelcomeCard';
-import Header from '../app/Header';
+import { Layout } from '../app';
+import MainBottom from '../app/MainBottom';
+import MainContent from '../app/MainContent';
 
 const Home = () => {
   return (
-    <div>
-      <WelcomeCard />
-      <ByeByeCard />
-    </div>
+    <Layout>
+      <div className="flex flex-col flex-auto bg-white">
+        <MainContent />
+        <MainBottom />
+      </div>
+    </Layout>
   );
 };
 
