@@ -11,7 +11,6 @@ export const useAuth = () => {
   const { username, email } = userAuth;
 
   useEffect(() => {
-    console.log(username, email, welcomeMessage, 'welfom');
     showWelcomeMessage();
   }, [isLoggedIn, welcomeMessage]);
 
@@ -25,7 +24,6 @@ export const useAuth = () => {
   const handleSubmit = e => {
     e.preventDefault();
     if (username.length > 3 && email.length > 3) {
-      console.log(userAuth);
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
