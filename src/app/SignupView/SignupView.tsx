@@ -1,69 +1,27 @@
-import Layout from '@/components/layout/Layout';
+import { useAuth } from '@/hooks/useAuth';
 import Button from '@/ui/button';
 import Form from '@/ui/form';
 import Input from '@/ui/input';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
+
+import WelcomeMessage from '../WelcomeMessage';
 
 const SignupView: FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userCredential, setUserCredential] = useState({
-    username: '',
-    email: '',
-  });
-  const [welcomeMessage, setWelcomeMessage] = useState('');
-
-  const { username, email } = userCredential;
-
-  useEffect(() => {
-    console.log(username, email, 'welfom');
-    showWelcomeMessage();
-  }, [isLoggedIn]);
-
-  const handleChange = e => {
-    setUserCredential({
-      ...userCredential,
-      [e.target.id]: e.target.value,
-    });
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    if (username.length > 3 && email.length > 3) {
-      console.log(userCredential);
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  };
-
-  const showWelcomeMessage = () => {
-    if (!username || !email) return;
-
-    setWelcomeMessage(
-      `Welcome to join! ${username}! Your email is ${email}. Please check your inbox to verify.`
-    );
-  };
-
-  const clearInput = () => {
-    if (username.length > 3 && email.length > 3) {
-      setUserCredential({
-        username: '',
-        email: '',
-      });
-    }
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-  };
+  const {
+    isLoggedIn,
+    handleChange,
+    handleSubmit,
+    clearInput,
+    username,
+    email,
+    welcomeMessage,
+    handleLogout,
+  } = useAuth();
 
   return (
     <>
       {isLoggedIn && (
-        <>
-          <h1>{welcomeMessage}</h1>
-          <Button onClick={handleLogout}>Again</Button>
-        </>
+        <WelcomeMessage msg={welcomeMessage} onLogout={handleLogout} />
       )}
 
       {!isLoggedIn && (
@@ -80,7 +38,7 @@ const SignupView: FC = () => {
             />
           </div>
           <div className="flex flex-col items-start mb-4">
-            <label className="text-sm" mb-1 htmlFor="email">
+            <label className="mb-1 text-sm" htmlFor="email">
               Email:
             </label>
             <Input
