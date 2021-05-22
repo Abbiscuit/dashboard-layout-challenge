@@ -1,3 +1,4 @@
+import { useAuth } from '@/hooks/useAuth';
 import Avatar from '@/ui/avatar';
 import Card from '@/ui/card/Card';
 import CardContent from '@/ui/card/CardContent';
@@ -6,6 +7,8 @@ import CardTitle from '@/ui/cardTitle';
 import { FC } from 'react';
 
 const UserCard: FC = () => {
+  const { user } = useAuth();
+  const { email, username } = user;
   return (
     <Card>
       <div className="w-24 h-24">
@@ -15,8 +18,8 @@ const UserCard: FC = () => {
         />
       </div>
       <CardContent>
-        <CardTitle>TITLE is HERE</CardTitle>
-        <CardDescription>Email: useremail@gmail.com</CardDescription>
+        <CardTitle>{username.toUpperCase()}</CardTitle>
+        <CardDescription>{email}</CardDescription>
       </CardContent>
     </Card>
   );
