@@ -1,48 +1,6 @@
 import { createContext, useReducer } from 'react';
 import { useRouter } from 'next/router';
-
-const authInitialState = {
-  isLogin: false,
-  username: '',
-  email: '',
-  user: {
-    username: '',
-    email: '',
-  },
-};
-
-const userReducer = (state, action) => {
-  switch (action.type) {
-    case 'SIGNUP':
-      return {
-        ...state,
-        [action.id]: action.payload,
-      };
-    case 'SIGNUP_SUCCESS':
-      return {
-        ...state,
-        isLogin: true,
-        user: {
-          ...state.user,
-          username: state.username,
-          email: state.email,
-        },
-      };
-    case 'SIGNUP_FAIL':
-      return {
-        ...state,
-        isLogin: false,
-      };
-    case 'RESET_INPUT':
-      return {
-        ...state,
-        username: '',
-        email: '',
-      };
-    default:
-      return state;
-  }
-};
+import { userReducer, authInitialState } from 'src/app/reducers/user/reducer';
 
 interface Context {
   username: string;
