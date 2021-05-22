@@ -1,64 +1,102 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
+
+const authInitialState = {
+  isLogin: false,
+  username: '',
+  email: '',
+  welcomeMessage: '',
+};
+
+const userReducer = (state, action) => {
+  switch (action.type) {
+    case 'SIGNUP':
+      return {
+        ...state,
+        [action.id]: action.payload,
+      };
+    case 'SIGNUP_SUCCESS':
+      return {
+        ...state,
+        isLogin: true,
+      };
+    case 'SIGNUP_FAIL':
+      return {
+        ...state,
+        isLogin: false,
+      };
+    case 'RESET_INPUT':
+      return {
+        ...state,
+        username: '',
+        email: '',
+      };
+    case 'SHOW_MESSAGE':
+      return {
+        ...state,
+        welcomeMessage: `Hellooo ${state.username} ${state.email}`,
+      };
+    default:
+      return state;
+  }
+};
 
 export const useAuth = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userAuth, setUserCredential] = useState({
-    username: '',
-    email: '',
-  });
-  const [welcomeMessage, setWelcomeMessage] = useState('');
+  const [authState, authDispatch] = useReducer(userReducer, authInitialState);
 
-  const { username, email } = userAuth;
+  const { username, email, isLogin, welcomeMessage } = authState;
 
   useEffect(() => {
     showWelcomeMessage();
-  }, [isLoggedIn, welcomeMessage]);
+  }, [isLogin]);
 
   const handleChange = e => {
-    setUserCredential({
-      ...userAuth,
-      [e.target.id]: e.target.value,
+    authDispatch({
+      type: 'SIGNUP',
+      id: e.target.id,
+      payload: e.target.value,
     });
   };
 
   const handleSubmit = e => {
     e.preventDefault();
     if (username.length > 3 && email.length > 3) {
-      setIsLoggedIn(true);
+      authDispatch({ type: 'SIGNUP_SUCCESS' });
+      authDispatch({ type: 'RESET_INPUT' });
     } else {
-      setIsLoggedIn(false);
+      authDispatch({ type: 'SIGNUP_FAIL' });
     }
   };
 
   const showWelcomeMessage = () => {
     if (!username || !email) return;
 
-    setWelcomeMessage(
-      `Welcome to join! ${username}! Your email is ${email}. Please check your inbox to verify.`
-    );
+    authDispatch({
+      type: 'SHOW_MESSAGE',
+      payload: {
+        username,
+        email,
+      },
+    });
   };
 
   const clearInput = () => {
     if (username.length > 3 && email.length > 3) {
-      setUserCredential({
-        username: '',
-        email: '',
-      });
+      authDispatch({ type: 'RESET_INPUT' });
     }
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
+    authDispatch({ type: 'SIGNUP_FAIL' });
   };
 
   return {
-    isLoggedIn,
-    handleChange,
+    isLoggedIn: isLogin,
     email,
     username,
+    welcomeMessage,
+    handleChange,
     handleSubmit,
     clearInput,
-    welcomeMessage,
     handleLogout,
   };
 };
