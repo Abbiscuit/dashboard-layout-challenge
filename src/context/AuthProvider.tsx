@@ -44,19 +44,21 @@ const userReducer = (state, action) => {
   }
 };
 
-export const AuthContext = createContext({
-  username: '',
-  email: '',
-  handleChange: (e: any) => e,
-  clearInput: () => {},
-  handleLogout: () => {},
-  isLoggedIn: false,
-  onSubmit: (e: any) => e,
+interface Context {
+  username: string;
+  email: string;
+  handleChange: (e: any) => void;
+  clearInput: () => void;
+  handleLogout: () => void;
+  isLoggedIn: boolean;
+  onSubmit: (e: any) => void;
   user: {
-    email: '',
-    username: '',
-  },
-});
+    email: string;
+    username: string;
+  };
+}
+
+export const AuthContext = createContext({} as Context);
 
 const AuthProvider = props => {
   const [authState, authDispatch] = useReducer(userReducer, authInitialState);
